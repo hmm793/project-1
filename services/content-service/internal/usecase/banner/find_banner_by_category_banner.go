@@ -1,11 +1,11 @@
 package usecase
 
 import (
-	"content-service-v3/services/content-service/domain/entity"
+	"content-service-v3/services/content-service/internal/usecase/banner/formatter"
 	"errors"
 )
 
-func (s *serviceBanner) FindBannerByCategoryBanner(name string) ([]entity.BannerEntity, error) {
+func (s *serviceBanner) FindBannerByCategoryBanner(name string) ([]formatter.FindBannerByCategoryBannerResponseFormatter, error) {
 	banner, err := s.repositoryBannerCategory.FindBannerCategoryByName(name)
 
 	if err != nil {
@@ -20,9 +20,12 @@ func (s *serviceBanner) FindBannerByCategoryBanner(name string) ([]entity.Banner
 	// Teruskan ke repository
 	banners,err := s.repository.FindBannerByCategoryBannerId(idBannerCategory)
 
+	// Formatter 
+	formatterBanners := formatter.FormatFindBannerByCategoryBannerResponse(banners)
+
 	if err != nil {
-		return banners, err
+		return formatterBanners, err
 	}
 
-	return banners,nil
+	return formatterBanners,nil
 }

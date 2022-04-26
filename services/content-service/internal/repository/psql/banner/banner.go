@@ -38,8 +38,9 @@ func (r *repositoryBanner) SaveBanner(banner entity.BannerEntity) (entity.Banner
 
 func (r *repositoryBanner) FindBannerById(id int) (entity.BannerEntity, error) {
 	var bannerInModel model_banner.BannerModel
-	var t time.Time
-	err := r.db.Where("id = ?", id).Where("deleted_at = ?", t).Preload("BannerCategoryModel").Find(&bannerInModel).Error
+	// var t time.Time
+	// err := r.db.Where("id = ?", id).Where("deleted_at = ?", t).Preload("BannerCategoryModel").Find(&bannerInModel).Error
+	err := r.db.Where("id = ?", id).Preload("BannerCategoryModel").Find(&bannerInModel).Error
 	
 	// Mapper To Entity
 	mappedBannerToEntity := mapper.To_Entity(bannerInModel)
@@ -48,13 +49,34 @@ func (r *repositoryBanner) FindBannerById(id int) (entity.BannerEntity, error) {
 	if err != nil {
 		return mappedBannerToEntity, err
 	}
+
 	// Not error
 	return mappedBannerToEntity, nil
 }
+
 func (r *repositoryBanner) FindBannerByCategoryBannerId(idBannerCategory int) ([]entity.BannerEntity, error) {
 	var bannersInModel []model_banner.BannerModel
 	var t time.Time
 	err := r.db.Where("banner_category_id = ?", idBannerCategory).Where("deleted_at = ?", t).Find(&bannersInModel).Error
+	
+	// Mapper To Entity
+	var mappedBannersToEntity []entity.BannerEntity
+
+	for _, banner := range bannersInModel {
+		mappedBannersToEntity = append(mappedBannersToEntity, mapper.To_Entity(banner))
+	}
+
+	// Error
+	if err != nil {
+		return mappedBannersToEntity, err
+	}
+	// Not error
+	return mappedBannersToEntity, nil
+}
+func (r *repositoryBanner) FindActiveBannerByCategoryBannerId(idBannerCategory int) ([]entity.BannerEntity, error) {
+	var bannersInModel []model_banner.BannerModel
+	var t time.Time
+	err := r.db.Where("banner_category_id = ?", idBannerCategory).Where("deleted_at = ?", t).Where("status = ?", 1).Find(&bannersInModel).Error
 	
 	// Mapper To Entity
 	var mappedBannersToEntity []entity.BannerEntity

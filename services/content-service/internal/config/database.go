@@ -1,8 +1,6 @@
 package config
 
 import (
-	"content-service-v3/services/content-service/internal/repository/psql/banner/model_banner"
-	"content-service-v3/services/content-service/internal/repository/psql/banner_category/model_banner_category"
 	"database/sql"
 	"fmt"
 	"log"
@@ -38,8 +36,8 @@ func ConnectPostgres() (*gorm.DB, *sql.DB, error) {
 	dbConn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: newLogger})
 
 	// Auto Migrate
-	dbConn.AutoMigrate(&model_banner.BannerModel{})
-	dbConn.AutoMigrate(&model_banner_category.BannerCategoryModel{})
+	// dbConn.AutoMigrate(&model_banner.BannerModel{})
+	// dbConn.AutoMigrate(&model_banner_category.BannerCategoryModel{})
 	
 	if err != nil {
 		log.Println("Error connect to PostgreSQL: ", err.Error())

@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (s *serviceBanner) FindBannerByCategoryBanner(name string) ([]formatter.FindBannerByCategoryBannerResponseFormatter, error) {
+func (s *serviceBanner) FindActiveBannerByCategoryBanner(name string) ([]formatter.FindBannerByCategoryBannerResponseFormatter, error) {
 	banner, err := s.repositoryBannerCategory.FindBannerCategoryByName(name)
 
 	if err != nil {
@@ -18,7 +18,7 @@ func (s *serviceBanner) FindBannerByCategoryBanner(name string) ([]formatter.Fin
 	}
 
 	// Teruskan ke repository
-	banners,err := s.repository.FindBannerByCategoryBannerId(idBannerCategory)
+	banners,err := s.repository.FindActiveBannerByCategoryBannerId(idBannerCategory)
 	
 	// Formatter 
 	formatterBanners := formatter.FormatFindBannerByCategoryBannerResponse(banners)

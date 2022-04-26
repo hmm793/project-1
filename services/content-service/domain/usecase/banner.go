@@ -10,4 +10,6 @@ type ServiceBanner interface {
 	CreateBanner(input dto.CreateBannerInput, file *multipart.FileHeader) (formatter.CreateBannerResponseFormatter, string, error)
 	FindBannerById(id int) (formatter.FindBannerByIDResponseFormatter, error)
 	FindBannerByCategoryBanner(name string) ([]formatter.FindBannerByCategoryBannerResponseFormatter, error)
+	FindActiveBannerByCategoryBanner(name string) ([]formatter.FindBannerByCategoryBannerResponseFormatter, error)
+	
 }

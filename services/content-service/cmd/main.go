@@ -51,5 +51,6 @@ func main() {
 	api.POST("/banner/create", bannerHandler.CreateBanner)
 	api.GET("/banner", bannerHandler.GetBanner)
 	api.GET("/banners/:categoryBanner/all", bannerHandler.GetBannerByCategoryBanner)
+	api.GET("/banners/:categoryBanner", bannerHandler.GetActiveBannerByCategoryBanner)
 	router.Run(":"+os.Getenv("PORT_DEV"))
 }

@@ -3,15 +3,16 @@ package usecase
 import (
 	"content-service-v3/services/content-service/domain/dto"
 	"content-service-v3/services/content-service/domain/entity"
+	"content-service-v3/services/content-service/internal/usecase/banner/formatter"
 	"errors"
 	"strconv"
 )
 
-func (s *serviceBanner) UpdateOrderBanner(input dto.UpdateOrderBannerInput) ([]entity.OrderEntity, error) {
-	var updatedBannersByOrder []entity.OrderEntity
+func (s *serviceBanner) UpdateOrderBanner(input dto.UpdateOrderBannerInput) ([]formatter.UpdateOrderBannerResponseFormatter, error) {
+	var updatedBannersByOrder []formatter.UpdateOrderBannerResponseFormatter
 	
 	// Mapper From DTO to Entity
-	mappedOder := entity.Update_Order_BannerDTO_TO_BannerEntity(input)
+	mappedOder := entity.Update_Order_Banner(input)
 
 	// Looping Through mappedOrder.OrderData
 	for _, order := range mappedOder.OrderData {
@@ -36,14 +37,8 @@ func (s *serviceBanner) UpdateOrderBanner(input dto.UpdateOrderBannerInput) ([]e
 		if err != nil {
 			return updatedBannersByOrder, err
 		}
-		
-		// Setelah Di Update Maka Di Map ke bantuk []entity.OrderEntity
-		updatedBannerByOrder := entity.OrderEntity{
-			ID: updatedBanner.ID,
-			Order: updatedBanner.Order,
-			Status: updatedBanner.Status,
-		}
-		updatedBannersByOrder = append(updatedBannersByOrder, updatedBannerByOrder)
+
+		updatedBannersByOrder = append(updatedBannersByOrder, formatter.FormatUpdateOrderBannerResponse(updatedBanner))
 	}
 
 	return updatedBannersByOrder, nil

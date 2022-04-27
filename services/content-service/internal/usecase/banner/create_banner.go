@@ -4,6 +4,7 @@ import (
 	"content-service-v3/services/content-service/domain/dto"
 	"content-service-v3/services/content-service/domain/entity"
 	"content-service-v3/services/content-service/internal/usecase/banner/formatter"
+	"errors"
 	"fmt"
 	"log"
 	"mime/multipart"
@@ -14,7 +15,7 @@ import (
 
 func (s *serviceBanner) CreateBanner(input dto.CreateBannerInput, file *multipart.FileHeader) (formatter.CreateBannerResponseFormatter, string, error) {
 	// Mapper From DTO to Entity
-	mappedBanner := entity.Create_BannerDTO_To_BannerEntity(input)
+	mappedBanner := entity.Create_Banner(input)
 
 	// Buat Path
 	// Inisialisasi Path
@@ -33,6 +34,10 @@ func (s *serviceBanner) CreateBanner(input dto.CreateBannerInput, file *multipar
 	idUser := strconv.Itoa(mappedBanner.CreatedById)
 	nameFile := strings.Split(file.Filename, ".")[0]
 	ekstensi := strings.Split(file.Filename, ".")[1]
+
+	if !(ekstensi == "jpg" || ekstensi == "png" || ekstensi == "jpeg") {
+		return formatter.CreateBannerResponseFormatter{}, "", errors.New("Ekstensi Tidak Valid")
+	}
 
 	pathForSave := fmt.Sprintf("services/content-service/asset/%s-%s.%s",idUser, nameFile, ekstensi)
 

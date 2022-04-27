@@ -18,7 +18,7 @@ func main() {
 	fmt.Println("Content Service V3")
 
 	// Environment Variables
-	err := godotenv.Load("services/content-service/environments/app.env")
+	err := godotenv.Load("environments/app.env")
 	if err != nil {
 		log.Fatal("Error loading app.env file")
 	}

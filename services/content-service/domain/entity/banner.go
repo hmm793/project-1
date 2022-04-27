@@ -23,10 +23,8 @@ type BannerEntity struct {
 	BannerCategoryID 	int
 }
 
-
-
 // Convert DTO ke Entity
-func Create_BannerDTO_To_BannerEntity(input dto.CreateBannerInput) BannerEntity {
+func Create_Banner(input dto.CreateBannerInput) BannerEntity {
 	mappedBanner := BannerEntity{
 		Link: input.Link,
 		Order: input.Order,
@@ -37,7 +35,8 @@ func Create_BannerDTO_To_BannerEntity(input dto.CreateBannerInput) BannerEntity 
 	}
 	return mappedBanner
 }
-func Update_BannerDTO_To_BannerEntity(input dto.UpdateBannerInput) BannerEntity {
+
+func Update_Banner(input dto.UpdateBannerInput) BannerEntity {
 	mappedBanner := BannerEntity{
 		Link: input.Link,
 		Order: input.Order,
@@ -49,7 +48,7 @@ func Update_BannerDTO_To_BannerEntity(input dto.UpdateBannerInput) BannerEntity 
 	return mappedBanner
 }
 
-func Delete_BannerDTO_To_BannerEntity(input dto.DeleteBannerInput) BannerEntity {
+func Delete_Banner(input dto.DeleteBannerInput) BannerEntity {
 	mappedBanner := BannerEntity{
 		ID: input.ID,
 		DeletedById: input.DeletedById,
@@ -58,7 +57,7 @@ func Delete_BannerDTO_To_BannerEntity(input dto.DeleteBannerInput) BannerEntity 
 	return mappedBanner
 }
 
-func Update_Status_BannerDTO_TO_BannerEntity(input dto.UpdateStatusBannerInput) BannerEntity {
+func Update_Status_Banner(input dto.UpdateStatusBannerInput) BannerEntity {
 	mappedBanner := BannerEntity{
 		ID: input.ID,
 		Status: input.Status,
@@ -69,7 +68,7 @@ func Update_Status_BannerDTO_TO_BannerEntity(input dto.UpdateStatusBannerInput) 
 }
 
 
-type OrderEntity struct {
+type orderEntity struct {
 	ID     int `json:"id"`
 	Order  int `json:"order"`
 	Status int `json:"status"`
@@ -78,13 +77,13 @@ type OrderEntity struct {
 type UpdateOrderBannerEntity struct {
 	UpdatedById   int           `json:"updatedById" binding:"number,required"`
 	UpdatedByName string        `json:"updatedByName" binding:"required"`
-	OrderData     []OrderEntity `json:"orderData"`
+	OrderData     []orderEntity `json:"orderData"`
 }
 
-func Update_Order_BannerDTO_TO_BannerEntity(input dto.UpdateOrderBannerInput) UpdateOrderBannerEntity {
-	var orders []OrderEntity
+func Update_Order_Banner(input dto.UpdateOrderBannerInput) UpdateOrderBannerEntity {
+	var orders []orderEntity
 	for _, order := range input.OrderData {
-		var newOrder OrderEntity
+		var newOrder orderEntity
 		newOrder.ID = order.ID
 		newOrder.Order = order.Order
 		newOrder.Status = order.Status 

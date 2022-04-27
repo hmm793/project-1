@@ -9,7 +9,7 @@ import (
 
 func (s *serviceBanner) DeleteBanner(id int, input dto.DeleteBannerInput) (int64, error) {
 	// Mapper From DTO to Entity
-	mappedBanner := entity.Delete_BannerDTO_To_BannerEntity(input)
+	mappedBanner := entity.Delete_Banner(input)
 
 	// Cek Apakah Ada Banner Dengan ID = id
 	currBanner, err := s.repository.FindBannerById(id)

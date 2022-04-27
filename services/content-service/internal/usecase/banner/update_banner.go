@@ -3,6 +3,7 @@ package usecase
 import (
 	"content-service-v3/services/content-service/domain/dto"
 	"content-service-v3/services/content-service/domain/entity"
+	"content-service-v3/services/content-service/internal/usecase/banner/formatter"
 	"errors"
 	"fmt"
 	"log"
@@ -12,19 +13,21 @@ import (
 	"strings"
 )
 
-func (s *serviceBanner) UpdateBanner(id int, input dto.UpdateBannerInput, file *multipart.FileHeader) (entity.BannerEntity, string, error) {
+func (s *serviceBanner) UpdateBanner(id int, input dto.UpdateBannerInput, file *multipart.FileHeader) (formatter.UpdateBannerResponseFormatter, string, error) {
+	// Define updattedBanner 
+	var updattedBanner formatter.UpdateBannerResponseFormatter
 	// Mapper From DTO to Entity
-	mappedBanner := entity.Update_BannerDTO_To_BannerEntity(input)
+	mappedBanner := entity.Update_Banner(input)
 
 	// Cek Apakah Ada Banner Dengan ID = id
 	currBanner, err := s.repository.FindBannerById(id)
 
 	if err != nil {
-		return mappedBanner, "", err
+		return updattedBanner, "", err
 	}
 
 	if currBanner.ID == 0 {
-		return mappedBanner, "", errors.New("Banner Not Found")
+		return updattedBanner, "", errors.New("Banner Not Found")
 	}
 
 	// Buat Path
@@ -64,11 +67,11 @@ func (s *serviceBanner) UpdateBanner(id int, input dto.UpdateBannerInput, file *
 
 		// Teruskan Ke Repository
 		updatedBanner, err := s.repository.UpdateBanner(currBanner)
-
+		updattedBanner = formatter.FormatUpdateBannerResponse(updatedBanner)
 		if err != nil {
-			return updatedBanner, pathForSave, err
+			return updattedBanner, pathForSave, err
 		}
-		return updatedBanner, pathForSave, nil
+		return updattedBanner, pathForSave, nil
 	} else {
 		// Klo belum ada
 		// Hapus Yang lama 
@@ -77,7 +80,7 @@ func (s *serviceBanner) UpdateBanner(id int, input dto.UpdateBannerInput, file *
 		err := os.Remove(fmt.Sprintf("services/content-service/asset/%s",pathForDelete))
 		
 		if err != nil {
-			return mappedBanner, "", errors.New("Gagal Menghapus File Sebelumnya")
+			return updattedBanner, "", errors.New("Gagal Menghapus File Sebelumnya")
 		}
 		
 		// set mappedBanner file name 
@@ -94,10 +97,10 @@ func (s *serviceBanner) UpdateBanner(id int, input dto.UpdateBannerInput, file *
 
 		// Teruskan Ke Repository
 		updatedBanner, err := s.repository.UpdateBanner(currBanner)
-
+		updattedBanner = formatter.FormatUpdateBannerResponse(updatedBanner)
 		if err != nil {
-			return updatedBanner, pathForSave, err
+			return updattedBanner, pathForSave, err
 		}
-		return updatedBanner, pathForSave, nil
+		return updattedBanner, pathForSave, nil
 	}
 }

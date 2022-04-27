@@ -18,5 +18,10 @@ func (h *bannerHandler) GetBanner(c *gin.Context) {
 
 	banner, err := h.bannerService.FindBannerById(idBanner)
 
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusOK, banner)
 }

@@ -9,4 +9,6 @@ type RepositoryBanner interface {
 	FindBannerById(id int) (entity.BannerEntity, error)
 	FindBannerByCategoryBannerId(idBannerCategory int) ([]entity.BannerEntity, error)
 	FindActiveBannerByCategoryBannerId(idBannerCategory int) ([]entity.BannerEntity, error)
+	UpdateBanner(banner entity.BannerEntity) (entity.BannerEntity, error)
+	DeleteBannerById(banner entity.BannerEntity) (int64, error)
 }

@@ -52,5 +52,9 @@ func main() {
 	api.GET("/banner", bannerHandler.GetBanner)
 	api.GET("/banners/:categoryBanner/all", bannerHandler.GetBannerByCategoryBanner)
 	api.GET("/banners/:categoryBanner", bannerHandler.GetActiveBannerByCategoryBanner)
+	api.PUT("/banner/update/:id", bannerHandler.UpdateBanner)
+	api.DELETE("/banner/delete/:id", bannerHandler.DeleteBanner)
+	api.PUT("/banner/update_status", bannerHandler.UpdateStatusBanner)
+	api.PUT("/banner/update_order", bannerHandler.UpdateOrderBanner)
 	router.Run(":"+os.Getenv("PORT_DEV"))
 }

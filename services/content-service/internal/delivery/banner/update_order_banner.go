@@ -21,15 +21,14 @@ func (h *bannerHandler) UpdateOrderBanner(c *gin.Context) {
 		return
 	}
 
-	// updatedBanner, err := h.bannerService.UpdateStatusBanner(input.ID, input)
+	updatedBannersByOrder, err := h.bannerService.UpdateOrderBanner(input)
+	if err != nil {
+		errorMessage := gin.H{
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, errorMessage)
+		return
+	}
 
-	// if err != nil {
-	// 	errorMessage := gin.H{
-	// 		"message": err.Error(),
-	// 	}
-	// 	c.JSON(http.StatusBadRequest, errorMessage)
-	// 	return
-	// }
-
-	// c.JSON(http.StatusOK, updatedBanner)
+	c.JSON(http.StatusOK, updatedBannersByOrder)
 }

@@ -15,4 +15,5 @@ type ServiceBanner interface {
 	UpdateBanner(id int, input dto.UpdateBannerInput, file *multipart.FileHeader) (entity.BannerEntity, string, error)
 	DeleteBanner(id int, input dto.DeleteBannerInput) (int64, error)
 	UpdateStatusBanner(id int, input dto.UpdateStatusBannerInput) (entity.BannerEntity, error)
+	UpdateOrderBanner(input dto.UpdateOrderBannerInput) ([]entity.OrderEntity, error)
 }

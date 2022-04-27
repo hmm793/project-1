@@ -23,6 +23,8 @@ type BannerEntity struct {
 	BannerCategoryID 	int
 }
 
+
+
 // Convert DTO ke Entity
 func Create_BannerDTO_To_BannerEntity(input dto.CreateBannerInput) BannerEntity {
 	mappedBanner := BannerEntity{
@@ -64,4 +66,35 @@ func Update_Status_BannerDTO_TO_BannerEntity(input dto.UpdateStatusBannerInput) 
 		UpdatedByName: input.UpdatedByName,
 	}
 	return mappedBanner
+}
+
+
+type OrderEntity struct {
+	ID     int `json:"id"`
+	Order  int `json:"order"`
+	Status int `json:"status"`
+}
+
+type UpdateOrderBannerEntity struct {
+	UpdatedById   int           `json:"updatedById" binding:"number,required"`
+	UpdatedByName string        `json:"updatedByName" binding:"required"`
+	OrderData     []OrderEntity `json:"orderData"`
+}
+
+func Update_Order_BannerDTO_TO_BannerEntity(input dto.UpdateOrderBannerInput) UpdateOrderBannerEntity {
+	var orders []OrderEntity
+	for _, order := range input.OrderData {
+		var newOrder OrderEntity
+		newOrder.ID = order.ID
+		newOrder.Order = order.Order
+		newOrder.Status = order.Status 
+		orders = append(orders, newOrder)
+	}
+
+	mappedOrder := UpdateOrderBannerEntity{
+		UpdatedById: input.UpdatedById,
+		UpdatedByName: input.UpdatedByName,
+		OrderData: orders,
+	}
+	return mappedOrder
 }
